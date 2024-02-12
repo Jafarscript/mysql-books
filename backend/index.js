@@ -8,7 +8,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'la@mi@di@190',
-    database: 'test'
+    database: 'ridwan'
 })
 
 app.use(express.json())
@@ -18,63 +18,69 @@ app.get('/', (req,res) => (
     res.send("Hello, My People")
 ))
 
-app.get('/books', (req,res) => {
-    const q = 'Select * from books';
+app.get('/property', (req,res) => {
+    const q = 'Select * from property';
     db.query(q, (err,data) => {
         if (err) return res.send(err)
         return res.json(data)
     } )
 })
 
-app.get('/books/:id', (req,res) => {
+app.get('/property/:id', (req,res) => {
     const bookID = req.params.id;
-    const q = `Select * from books where id = ?`;
+    const q = `Select * from property where id = ?`;
     db.query(q,[bookID], (err,data) => {
         if (err) return res.send(err)
         return res.json(data)
     } )
 })
 
-app.post('/books', (req, res) => {
-    const q = 'Insert into books (`title`, `desc`, `cover`, `author`, `price`) values (?)';
+app.post('/property', (req, res) => {
+    const q = 'Insert into property (`label`, `category`, `Market`, `Neighbourhood`, `Agent`, `Picture`, `Price`, `Year`) values (?)';
     const values = [
-        req.body.title,
-        req.body.desc,
-        req.body.cover,
-        req.body.author,
-        req.body.price
+        req.body.label,
+        req.body.category,
+        req.body.market,
+        req.body.neighbourhood,
+        req.body.agent,
+        req.body.picture,
+        req.body.price,
+        req.body.year
     ]
     db.query(q, [values], (err,data) => {
         if (err) return res.json(err);
-        return res.json("Book has been created sucessfully")
+        return res.json("Property has been created sucessfully")
     })
 })
 
-app.delete('/books/:id', (req,res) => {
-    const bookID = req.params.id;
-    const q = `Delete from books where id = ?`
+app.delete('/property/:id', (req,res) => {
+    const propertyID = req.params.id;
+    const q = `Delete from property where id = ?`
 
-    db.query(q, [bookID], (err,date) => {
+    db.query(q, [propertyID], (err,date) => {
         if (err) return res.json(err);
-        return res.json('Book has been deleted successfully')
+        return res.json('Property has been deleted successfully')
     })
 
 })
 
-app.put('/books/:id', (req, res) => {
-    const bookID = req.params.id;
-    const q = "UPDATE books SET `title` = ?, `desc` = ?, `cover` = ?, `author` = ?, `price` = ? WHERE id = ?";
+app.put('/property/:id', (req, res) => {
+    const propertyID = req.params.id;
+    const q = "UPDATE property SET `label` = ?, `category` = ?, `Market` = ?, `Neighbourhood` = ?, `Agent` = ?,  `Picture` = ?, `Price` = ?, `Year` = ? WHERE id = ?";
 
-     const values = [
-        req.body.title,
-        req.body.desc,
-        req.body.cover,
-        req.body.author,
-        req.body.price
+    const values = [
+        req.body.label,
+        req.body.category,
+        req.body.market,
+        req.body.neighbourhood,
+        req.body.agent,
+        req.body.picture,
+        req.body.price,
+        req.body.year
     ]
-    db.query(q, [...values, bookID], (err, data) => {
+    db.query(q, [...values, propertyID], (err, data) => {
         if (err) return res.json(err);
-        return res.json("Book has been updated successfully");
+        return res.json("Property has been updated successfully");
     });
 });
 

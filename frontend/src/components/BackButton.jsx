@@ -1,16 +1,14 @@
-/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom"
 import { BsArrowLeft } from "react-icons/bs"
-import './BackButton.css'
 
 const BackButton = ({destination = '/'}) => {
   return (
     <div className="flex">
         <Link
         to={destination}
-        className="custom-bg-sky-800 custom-text-white custom-px-4 custom-py-1 custom-rounded-lg custom-w-fit"
+        className="bg-sky-800 text-white px-4 py-1 rounded-lg w-fit"
         >
-        <BsArrowLeft className="arrow" />
+        <BsArrowLeft className="text-2xl" />
         </Link>
     </div>
   )

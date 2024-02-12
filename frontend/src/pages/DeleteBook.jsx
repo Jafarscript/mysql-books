@@ -1,13 +1,12 @@
 import {useState, useEffect} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import { useSnackbar } from "notistack";
-import '../style.css'
-import BackButton from '../components/BackButton';
 
 const DeleteBook = () => {
-  const [book, setBook] = useState(null);
+  const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {id} = useParams();
@@ -16,9 +15,9 @@ const DeleteBook = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:8080/books/${id}`)
+      .get(`http://localhost:8080/property/${id}`)
       .then((response) => {
-        setBook(response.data);
+        setProperty(response.data[0]);
         setLoading(false);
       })
       .catch((error) => {
@@ -31,7 +30,7 @@ const DeleteBook = () => {
   const handleDeleteBook = () => {
     setLoading(true);
     axios
-      .delete(`http://localhost:8080/books/${id}`)
+      .delete(`http://localhost:8080/property/${id}`)
       .then(() => {
         setLoading(false);
         enqueueSnackbar('Book Deleted Successfully', {variant: 'success'})
@@ -43,24 +42,22 @@ const DeleteBook = () => {
         enqueueSnackbar('An error has occurred', {variant: 'error'})
       });
   };
-
-  // console.log(book[0].title)
   return (
-    <div className="deletepage">
-      <BackButton/>
-      <h1 className="">Delete Book</h1>
+    <div className="p-4">
+      <BackButton />
+      <h1 className="text-3xl my-4">Delete Book</h1>
       {loading ? (
-        <div className="">
+        <div className="flex justify-center items-center mt-2">
           <Spinner />
         </div>
       ) : null}
-      {book && (
-        <div className="deletebox">
+      {property && (
+        <div className="border-2 border-sky-400 rounded-xl p-4">
           <p>
-            Are you sure you want to delete the book <strong>{book[0].title}</strong> by {book[0].author}?
+            Are you sure you want to delete the property <strong>{property.Label}</strong> by {property.Agent}?
           </p>
-          <div className="flex">
-            <button className="" onClick={handleDeleteBook}>
+          <div className="flex mt-4">
+            <button className="p-2 bg-red-600 text-white" onClick={handleDeleteBook}>
               Delete
             </button>
           </div>
